@@ -1,21 +1,22 @@
 #include <iostream>
 #include <thread>
 #include <mutex>
+using namespace std;
 
-std::mutex mutexA;
-std::mutex mutexB;
+mutex mutexA;
+mutex mutexB;
 
 void threadA()
 {
-    std::cout << "Thread A trying to acquire mutex A" << std::endl;
+    cout << "Thread A trying to acquire mutex A" << endl;
     mutexA.lock();
-    std::cout << "Thread A acquired mutex A" << std::endl;
+    cout << "Thread A acquired mutex A" << endl;
     
-    std::this_thread::sleep_for(std::chrono::seconds(1)); // Adding a delay to simulate some work
+    this_thread::sleep_for(std::chrono::seconds(1)); // Adding a delay to simulate some work
     
-    std::cout << "Thread A trying to acquire mutex B" << std::endl;
+    cout << "Thread A trying to acquire mutex B" << endl;
     mutexB.lock(); // Deadlock happens here
-    std::cout << "Thread A acquired mutex B" << std::endl;
+    cout << "Thread A acquired mutex B" << endl;
     
     mutexB.unlock();
     mutexA.unlock();
@@ -23,15 +24,15 @@ void threadA()
 
 void threadB()
 {
-    std::cout << "Thread B trying to acquire mutex B" << std::endl;
+    cout << "Thread B trying to acquire mutex B" << endl;
     mutexB.lock();
-    std::cout << "Thread B acquired mutex B" << std::endl;
+    cout << "Thread B acquired mutex B" << endl;
     
-    std::this_thread::sleep_for(std::chrono::seconds(1)); // Adding a delay to simulate some work
+    this_thread::sleep_for(std::chrono::seconds(1)); // Adding a delay to simulate some work
     
-    std::cout << "Thread B trying to acquire mutex A" << std::endl;
+    cout << "Thread B trying to acquire mutex A" << endl;
     mutexA.lock(); // Deadlock happens here
-    std::cout << "Thread B acquired mutex A" << std::endl;
+    cout << "Thread B acquired mutex A" << endl;
     
     mutexA.unlock();
     mutexB.unlock();
